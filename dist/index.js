@@ -11303,28 +11303,28 @@ const VALIDATION_RULE = {
     nudgeBlocks: ['required', 'array', {'in': ['commit', 'message']}]
 }
 
-// const DEFAULT = {
-//     successColor: '#228c22',
-//     failureColor: '#990f02',
-//     nudgeBlocks: 'commit,message'
-// }
+const DEFAULT = {
+    successColor: '#228c22',
+    failureColor: '#990f02',
+    nudgeBlocks: 'commit,message'
+}
 
 function validateInputArgs(inputArgs){
-    let webhooksValidationParam = validateWebhooks(inputArgs);
-    // let successColorValidationParam = validateSuccessColor(inputArgs);
-    // let failureColorValidationParam = validateFailureColor(inputArgs);
+    // let webhooksValidationParam = validateWebhooks(inputArgs);
+    let successColorValidationParam = validateSuccessColor(inputArgs);
+    let failureColorValidationParam = validateFailureColor(inputArgs);
     // let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
 
     let errors = [];
-    if(webhooksValidationParam.error !== null){
-        errors.push(webhooksValidationParam.error);
+    // if(webhooksValidationParam.error !== null){
+    //     errors.push(webhooksValidationParam.error);
+    // }
+    if(successColorValidationParam.error !== null){
+        errors.push(successColorValidationParam.error);
     }
-    // if(successColorValidationParam.error !== null){
-    //     errors.push(successColorValidationParam.error);
-    // }
-    // if(failureColorValidationParam.error !== null){
-    //     errors.push(failureColorValidationParam.error);
-    // }
+    if(failureColorValidationParam.error !== null){
+        errors.push(failureColorValidationParam.error);
+    }
     // if(nudgeBlocksValidationParam.error !== null){
     //     errors.push(nudgeBlocksValidationParam.error);
     // }
@@ -11332,31 +11332,31 @@ function validateInputArgs(inputArgs){
     return errors;
 }
 
-function validateWebhooks(inputArgs){
-    console.log(JSON.stringify(inputArgs));
-    let webhooks = [...new Set((inputArgs.webhooks || '').toString().split(','))]; 
-    console.log(JSON.stringify(webhooks));
-    let data = {
-        webhooks: [...new Set((inputArgs.webhooks || '').toString().split(','))]
-    };
-    let rule = {
-        webhooks: VALIDATION_RULE.webhooks
-    };
-    let validation = new Validator(data, rule);
-    console.log(`Webhooks is invalid: ${validation.fails()}`);
-    let result = {
-        error: (validation.fails() ? '[webhooks] is invalid' : null)
-    };
-    return result;
+// function validateWebhooks(inputArgs){
+//     console.log(JSON.stringify(inputArgs));
+//     let webhooks = [...new Set((inputArgs.webhooks || '').toString().split(','))]; 
+//     console.log(JSON.stringify(webhooks));
+//     let data = {
+//         webhooks: [...new Set((inputArgs.webhooks || '').toString().split(','))]
+//     };
+//     let rule = {
+//         webhooks: VALIDATION_RULE.webhooks
+//     };
+//     let validation = new Validator(data, rule);
+//     console.log(`Webhooks is invalid: ${validation.fails()}`);
+//     let result = {
+//         error: (validation.fails() ? '[webhooks] is invalid' : null)
+//     };
+//     return result;
+// }
+
+function validateSuccessColor(inputArgs){
+    return new ValidatedConfigParam((inputArgs.successColor || DEFAULT.successColor), VALIDATION_RULE.successColor, '[success-color] is invalid');
 }
 
-// function validateSuccessColor(inputArgs){
-//     return new ValidatedConfigParam((inputArgs.successColor || DEFAULT.successColor), VALIDATION_RULE.successColor, '[success-color] is invalid');
-// }
-
-// function validateFailureColor(inputArgs){
-//     return new ValidatedConfigParam((inputArgs.failureColor || DEFAULT.failureColor), VALIDATION_RULE.failureColor, '[failure-color] is invalid');
-// }
+function validateFailureColor(inputArgs){
+    return new ValidatedConfigParam((inputArgs.failureColor || DEFAULT.failureColor), VALIDATION_RULE.failureColor, '[failure-color] is invalid');
+}
 
 // function validateNudgeBlocks(inputArgs){
 //     let nudgeBlocks = [...new Set((inputArgs.nudgeBlocks || DEFAULT.nudgeBlocks).toString().split(','))];
