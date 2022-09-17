@@ -9230,7 +9230,7 @@ async function run() {
     const nudgeBlocks = core.getInput('nudge-blocks');
 
     core.info(`Webhooks: ${webhooks}. Success color: ${successColor}. Failure color: ${failureColor}. Nudge blocks: ${nudgeBlocks}`);
-    core.info(`Github context: ${JSON.stringify(github)}`);
+    core.info(`Github context: ${JSON.stringify(github.context.payload)}`);
   } catch (error) {
     core.setFailed(error.message);
   }
