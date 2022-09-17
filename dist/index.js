@@ -11310,6 +11310,7 @@ const DEFAULT = {
 }
 
 function validateInputArgs(inputArgs){
+    console.log(JSON.stringify(inputArgs));
     let webhooksValidationError = validateWebhooks(inputArgs);
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
