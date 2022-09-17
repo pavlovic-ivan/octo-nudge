@@ -1,18 +1,16 @@
 const core = require('@actions/core');
-const wait = require('./wait');
-
+const github = require('@actions/github');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const webhooks = core.getInput('webhooks');
+    const successColor = core.getInput('success-color');
+    const failureColor = core.getInput('failure-color');
+    const nudgeBlocks = core.getInput('nudge-blocks');
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
-
-    core.setOutput('time', new Date().toTimeString());
+    core.info(`Webhooks: ${webhooks}. Success color: ${successColor}. Failure color: ${failureColor}. Nudge blocks: ${nudgeBlocks}`);
+    core.info(`Github context: ${github}`);
   } catch (error) {
     core.setFailed(error.message);
   }

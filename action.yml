@@ -1,13 +1,24 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Octo Nudge'
+description: 'Sends Slack and/or Discord nudges'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  webhooks:
+    description: 'A comma separated list of Slack/Discord webhooks to which to send the nudge'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  # context:
+  #   description: 'Github context'
+  #   required: true
+  success-color:
+    description: 'Hex value of the color for successfull workflow run conclussions'
+    required: false
+    default: '#228c22'
+  failure-color:
+    description: 'Hex value of the color for failed workflow run conclussions'
+    required: false
+    default: '#990f02'
+  nudge-blocks:
+    description: 'A comma separated list of blocks you want to see in the nudge message. Default: [commit,message]. Blocks will appear in provided order'
+    required: false
+    default: 'commit,message'
 runs:
   using: 'node16'
   main: 'dist/index.js'
