@@ -62,16 +62,15 @@ function validateInputArgs(inputArgs){
 // }
 
 function validateSuccessColor(inputArgs){
-    console.log(JSON.stringify(inputArgs));
     let data = {
         successColor: (inputArgs.successColor || DEFAULT.successColor).toString()
     };
     let rule = {
         successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
     };
-    console.log(JSON.stringify(data));
-    console.log(JSON.stringify(rule));
-    return (new Validator(data, rule).fails() ? '[success-color] is invalid' : null);
+    let error = (new Validator(data, rule).fails() ? '[success-color] is invalid' : null);
+    console.log(error);
+    return error;
 }
 
 // function validateFailureColor(inputArgs){
