@@ -11310,34 +11310,24 @@ const DEFAULT = {
 }
 
 function validateInputArgs(inputArgs){
-    let data = {
-        name: 'test'
-    };
-    let rule = {
-        name: 'required'
-    };
-
-    let v = new Validator(data, rule);
-    console.log(`${inputArgs}, ${v.fails()}`);
-
-    // let webhooksValidationError = validateWebhooks(inputArgs);
-    // let successColorValidationError = validateSuccessColor(inputArgs);
-    // let failureColorValidationError = validateFailureColor(inputArgs);
-    // let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
+    let webhooksValidationParam = validateWebhooks(inputArgs);
+    let successColorValidationParam = validateSuccessColor(inputArgs);
+    let failureColorValidationParam = validateFailureColor(inputArgs);
+    let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
 
     let errors = [];
-    // if(webhooksValidationError !== null){
-    //     errors.push(webhooksValidationError);
-    // }
-    // if(successColorValidationError !== null){
-    //     errors.push(successColorValidationError);
-    // }
-    // if(failureColorValidationError !== null){
-    //     errors.push(failureColorValidationError);
-    // }
-    // if(nudgeBlocksValidationError !== null){
-    //     errors.push(nudgeBlocksValidationError);
-    // }
+    if(webhooksValidationParam.error !== null){
+        errors.push(webhooksValidationParam.error);
+    }
+    if(successColorValidationParam.error !== null){
+        errors.push(successColorValidationParam.error);
+    }
+    if(failureColorValidationParam.error !== null){
+        errors.push(failureColorValidationParam.error);
+    }
+    if(nudgeBlocksValidationParam.error !== null){
+        errors.push(nudgeBlocksValidationParam.error);
+    }
 
     return errors;
 }
