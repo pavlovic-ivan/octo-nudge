@@ -16,5 +16,7 @@ jobs:
       - run: npm ci
       - run: npm run prepare
       - run: |
+          git config --global user.email "bot@example.com"
+          git config --global user.name "bot"
           git commit -a -m "Build dist dir"
           git push origin main
