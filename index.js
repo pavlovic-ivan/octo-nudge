@@ -6,7 +6,7 @@ const client = require('./client');
 async function run() {
   try {
     let inputArgs = {
-      webhooks: core.getInput('webhooks'),
+      webhooks: core.getInput('webhooks').split(','),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks')
