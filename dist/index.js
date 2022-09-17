@@ -15415,7 +15415,7 @@ const client = __nccwpck_require__(5397);
 async function run() {
   try {
     let inputArgs = {
-      webhooks: core.getInput('webhooks'),
+      webhooks: core.getInput('webhooks').split(','),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks')
