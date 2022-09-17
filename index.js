@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 // most @actions toolkit packages have async methods
-async function run() {
+function run() {
   try {
     const webhooks = core.getInput('webhooks');
     const successColor = core.getInput('success-color');
