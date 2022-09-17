@@ -9222,7 +9222,7 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
 // most @actions toolkit packages have async methods
-function run() {
+async function run() {
   try {
     const webhooks = core.getInput('webhooks');
     const successColor = core.getInput('success-color');
