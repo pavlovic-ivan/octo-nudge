@@ -6,7 +6,7 @@ const nudgeBuilder = require('./nudge-builder');
 async function run() {
   try {
     let inputArgs = {
-      webhooks: core.getInput('webhooks').split(','),
+      webhooks: core.getInput('webhooks'),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks')

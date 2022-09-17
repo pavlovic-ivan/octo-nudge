@@ -11310,7 +11310,6 @@ const DEFAULT = {
 }
 
 function validateInputArgs(inputArgs){
-    console.log(JSON.stringify(inputArgs));
     let webhooksValidationError = validateWebhooks(inputArgs);
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
@@ -11566,7 +11565,7 @@ const nudgeBuilder = __nccwpck_require__(5029);
 async function run() {
   try {
     let inputArgs = {
-      webhooks: core.getInput('webhooks').split(','),
+      webhooks: core.getInput('webhooks'),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks')
