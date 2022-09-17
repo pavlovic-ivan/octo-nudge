@@ -11303,11 +11303,11 @@ const VALIDATION_RULE = {
     nudgeBlocks: ['required', 'array', {'in': ['commit', 'message']}]
 }
 
-const DEFAULT = {
-    successColor: '#228c22',
-    failureColor: '#990f02',
-    nudgeBlocks: 'commit,message'
-}
+// const DEFAULT = {
+//     successColor: '#228c22',
+//     failureColor: '#990f02',
+//     nudgeBlocks: 'commit,message'
+// }
 
 function validateInputArgs(inputArgs){
     let webhooksValidationParam = validateWebhooks(inputArgs);
@@ -11334,6 +11334,8 @@ function validateInputArgs(inputArgs){
 
 function validateWebhooks(inputArgs){
     console.log(JSON.stringify(inputArgs));
+    let webhooks = [...new Set((inputArgs.webhooks || '').toString().split(','))]; 
+    console.log(JSON.stringify(webhooks));
     let data = {
         webhooks: [...new Set((inputArgs.webhooks || '').toString().split(','))]
     };
