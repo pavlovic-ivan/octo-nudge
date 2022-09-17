@@ -11333,6 +11333,7 @@ function validateInputArgs(inputArgs){
 }
 
 function validateWebhooks(inputArgs){
+    console.log(JSON.stringify(inputArgs));
     let data = {
         webhooks: [...new Set((inputArgs.webhooks || '').toString().split(','))]
     };
