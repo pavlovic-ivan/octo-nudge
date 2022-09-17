@@ -4,9 +4,6 @@ inputs:
   webhooks:
     description: 'A comma separated list of Slack/Discord webhooks to which to send the nudge'
     required: true
-  # context:
-  #   description: 'Github context'
-  #   required: true
   success-color:
     description: 'Hex value of the color for successfull workflow run conclussions'
     required: false
