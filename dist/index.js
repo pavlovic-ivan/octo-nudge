@@ -11333,8 +11333,8 @@ function validateInputArgs(inputArgs){
 }
 
 function validateWebhooks(inputArgs){
-    let webhooks = [...new Set((inputArgs.webhooks || '').split(','))];
-    return new ValidatedConfigParam(webhooks, VALIDATION_RULE.webhooks, '[webhooks] is invalid');
+    let webhooks = (inputArgs.webhooks || '').toString();
+    return new ValidatedConfigParam([...new Set(webhooks.split(','))], VALIDATION_RULE.webhooks, '[webhooks] is invalid');
 }
 
 function validateSuccessColor(inputArgs){
@@ -11346,7 +11346,7 @@ function validateFailureColor(inputArgs){
 }
 
 function validateNudgeBlocks(inputArgs){
-    let nudgeBlocks = [...new Set((inputArgs.nudgeBlocks || '').split(','))];
+    let nudgeBlocks = [...new Set((inputArgs.nudgeBlocks || DEFAULT.nudgeBlocks).toString().split(','))];
     return new ValidatedConfigParam(nudgeBlocks, VALIDATION_RULE.nudgeBlocks, '[nudge-blocks] is invalid');
 }
 
