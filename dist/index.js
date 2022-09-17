@@ -11351,6 +11351,7 @@ function validateInputArgs(inputArgs){
 // }
 
 function validateSuccessColor(inputArgs){
+    console.log(JSON.stringify(inputArgs));
     let data = {
         successColor: (inputArgs.successColor || DEFAULT.successColor).toString()
     };
