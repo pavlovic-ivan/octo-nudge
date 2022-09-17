@@ -9,20 +9,18 @@ function validateInputArgs(inputArgs){
 
 function createMessage(data){
     return {
-        tts: false,
-        embeds: [
-        {
-            color: convertHexToInt(data.successColor),
-            fields: []
-        }
-        ]
-    }
+        attachments: [{
+          author_name: 'Octo Nudge',
+          color: data.successColor,
+          fields: []
+        }]
+    };
 }
 
-function convertHexToInt(hex){
-    hex = hex.replace('#', '');
-    return parseInt(hex, 16);
-}
+// function convertHexToInt(hex){
+//     hex = hex.replace('#', '');
+//     return parseInt(hex, 16);
+// }
 
 // function addAdditionalInfo(repoConfig, message, workflow_run, repository){
 //     for(var i = 0; i < repoConfig.blocks.length; i++){
