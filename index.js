@@ -6,7 +6,7 @@ const nudgeBuilder = require('./nudge-builder');
 async function run() {
   try {
     let inputArgs = {
-      webhooks: core.getInput('webhooks'),
+      webhooks: core.getInput('webhooks', { required: true }),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks')
@@ -14,7 +14,7 @@ async function run() {
 
     let context = {
       conclussion: github.context.payload.workflow_run.conclusion,
-      commit: github.context.payload.workflow_run.head_commit,
+      commit: github.context.payload.workflow_run.head_commit.id,
       workflowUrl: github.context.payload.workflow_run.html_url
     };
     

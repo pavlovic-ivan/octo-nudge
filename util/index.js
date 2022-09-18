@@ -1,78 +1,90 @@
-let Validator = require('validatorjs');
-
-class ValidatedConfigParam {
-    constructor(data, validationRules, error){
-        let validation = new Validator({ data }, { data: validationRules});
-        this.error = (validation.fails() ? error : null);
-    }
-}
-
 const VALIDATION_RULE = {
-    webhooks: 'required|array|min:1',
-    successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-    failureColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-    nudgeBlocks: ['required', 'array', {'in': ['commit', 'message']}]
+    colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+    nudgeBlocks: [ 'commit', 'message' ]
 }
 
-// const DEFAULT = {
-//     successColor: '#228c22',
-//     failureColor: '#990f02',
-//     nudgeBlocks: 'commit,message'
-// }
+const DEFAULT = {
+    successColor: '#228c22',
+    failureColor: '#990f02'
+}
 
 function validateInputArgs(inputArgs){
-    let webhooksValidationParam = validateWebhooks(inputArgs);
-    // let successColorValidationParam = validateSuccessColor(inputArgs);
-    // let failureColorValidationParam = validateFailureColor(inputArgs);
-    // let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
+    let webhooksValidationError = validateWebhooks(inputArgs);
+    let successColorValidationError = validateSuccessColor(inputArgs);
+    let failureColorValidationError = validateFailureColor(inputArgs);
+    let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
 
     let errors = [];
-    if(webhooksValidationParam.error !== null){
-        errors.push(webhooksValidationParam.error);
+    if(webhooksValidationError !== null){
+        errors.push(webhooksValidationError);
     }
-    // if(successColorValidationParam.error !== null){
-    //     errors.push(successColorValidationParam.error);
-    // }
-    // if(failureColorValidationParam.error !== null){
-    //     errors.push(failureColorValidationParam.error);
-    // }
-    // if(nudgeBlocksValidationParam.error !== null){
-    //     errors.push(nudgeBlocksValidationParam.error);
-    // }
+    if(successColorValidationError){
+        errors.push(successColorValidationError);
+    }
+    if(failureColorValidationError){
+        errors.push(failureColorValidationError);
+    }
+    if(nudgeBlocksValidationError){
+        errors.push(nudgeBlocksValidationError);
+    }
 
     return errors;
 }
 
 function validateWebhooks(inputArgs){
-    console.log(JSON.stringify(inputArgs));
-    let webhooks = [...new Set((inputArgs.webhooks || '').toString().split(','))]; 
-    console.log(JSON.stringify(webhooks));
-    let data = {
-        webhooks: [...new Set((inputArgs.webhooks || '').toString().split(','))]
-    };
-    let rule = {
-        webhooks: VALIDATION_RULE.webhooks
-    };
-    let validation = new Validator(data, rule);
-    console.log(`Webhooks is invalid: ${validation.fails()}`);
-    let result = {
-        error: (validation.fails() ? '[webhooks] is invalid' : null)
-    };
-    return result;
+    let error = null;
+    if(!inputArgs.webhooks){
+        error = '[webhooks] is invalid';
+    } else {
+        let webhooks = [... new Set(inputArgs.webhooks.toString().split(','))]
+        let errors = [];
+        webhooks.forEach(webhook => {
+                try {
+                    new URL(webhook);
+                } catch(e) {
+                    errors.push(`${webhook} is an invalid URL`);
+                }
+            }
+        );
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
 }
 
-// function validateSuccessColor(inputArgs){
-//     return new ValidatedConfigParam((inputArgs.successColor || DEFAULT.successColor), VALIDATION_RULE.successColor, '[success-color] is invalid');
-// }
+function validateSuccessColor(inputArgs){
+    let successColor = (inputArgs.successColor || DEFAULT.successColor).toString();
+    let valid = VALIDATION_RULE.colorRegex.test(successColor);
+    let error = (valid ? null : '[success-color] is invalid');
+    return error;
+}
 
-// function validateFailureColor(inputArgs){
-//     return new ValidatedConfigParam((inputArgs.failureColor || DEFAULT.failureColor), VALIDATION_RULE.failureColor, '[failure-color] is invalid');
-// }
+function validateFailureColor(inputArgs){
+    let failureColor = (inputArgs.failureColor || DEFAULT.failureColor).toString();
+    let valid = VALIDATION_RULE.colorRegex.test(failureColor);
+    let error = (valid ? null : '[failure-color] is invalid');
+    return error;
+}
 
-// function validateNudgeBlocks(inputArgs){
-//     let nudgeBlocks = [...new Set((inputArgs.nudgeBlocks || DEFAULT.nudgeBlocks).toString().split(','))];
-//     return new ValidatedConfigParam(nudgeBlocks, VALIDATION_RULE.nudgeBlocks, '[nudge-blocks] is invalid');
-// }
+function validateNudgeBlocks(inputArgs){
+    let error = null;
+    if(!inputArgs.nudgeBlocks){
+        error = '[nudge-blocks] is invalid';
+    } else {
+        let nudgeBlocks = [... new Set(inputArgs.nudgeBlocks.toString().split(','))]
+        let errors = [];
+        nudgeBlocks.forEach(nudgeBlock => {
+            if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
+                errors.push(`${nudgeBlock} is an invalid nudge block value`);
+            }
+        });
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
+}
 
 // function createMessage(data){
 //     return {
