@@ -1,18 +1,7 @@
-let Validator = require('validatorjs');
-
-// class ValidatedConfigParam {
-//     constructor(data, validationRules, error){
-//         let validation = new Validator({ data }, { data: validationRules});
-//         this.error = (validation.fails() ? error : null);
-//     }
-// }
-
-// const VALIDATION_RULE = {
-//     webhooks: 'required|array|min:1',
-//     successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-//     failureColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-//     nudgeBlocks: ['required', 'array', {'in': ['commit', 'message']}]
-// }
+const VALIDATION_RULE = {
+    colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+    nudgeBlocks: ['required', 'array', {'in': ['commit', 'message']}]
+}
 
 const DEFAULT = {
     successColor: '#228c22',
@@ -23,7 +12,7 @@ const DEFAULT = {
 function validateInputArgs(inputArgs){
     // let webhooksValidationParam = validateWebhooks(inputArgs);
     let successColorValidationError = validateSuccessColor(inputArgs);
-    // let failureColorValidationParam = validateFailureColor(inputArgs);
+    let failureColorValidationParam = validateFailureColor(inputArgs);
     // let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
 
     let errors = [];
@@ -33,9 +22,9 @@ function validateInputArgs(inputArgs){
     if(successColorValidationError !== null){
         errors.push(successColorValidationError);
     }
-    // if(failureColorValidationParam.error !== null){
-    //     errors.push(failureColorValidationParam.error);
-    // }
+    if(failureColorValidationParam.error !== null){
+        errors.push(failureColorValidationParam.error);
+    }
     // if(nudgeBlocksValidationParam.error !== null){
     //     errors.push(nudgeBlocksValidationParam.error);
     // }
@@ -62,27 +51,18 @@ function validateInputArgs(inputArgs){
 // }
 
 function validateSuccessColor(inputArgs){
-    let data = {
-        successColor: (inputArgs.successColor || DEFAULT.successColor).toString()
-    };
-    let rule = {
-        successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
-    };
-
-    console.log(JSON.stringify(data));
-    console.log(JSON.stringify(rule));
-
-    let validation = new Validator(data, rule);
-    
-    console.log(validation.fails());
-    let error = (validation.fails() ? '[success-color] is invalid' : null);
-    console.log(error);
+    let successColor = (inputArgs.successColor || DEFAULT.successColor).toString();
+    let valid = VALIDATION_RULE.colorRegex.test(successColor);
+    let error = (valid ? null : '[success-color] is invalid');
     return error;
 }
 
-// function validateFailureColor(inputArgs){
-//     return new ValidatedConfigParam((inputArgs.failureColor || DEFAULT.failureColor), VALIDATION_RULE.failureColor, '[failure-color] is invalid');
-// }
+function validateFailureColor(inputArgs){
+    let failureColor = (inputArgs.failureColor || DEFAULT.failureColor).toString();
+    let valid = VALIDATION_RULE.colorRegex.test(failureColor);
+    let error = (valid ? null : '[ailure-color] is invalid');
+    return error;
+}
 
 // function validateNudgeBlocks(inputArgs){
 //     let nudgeBlocks = [...new Set((inputArgs.nudgeBlocks || DEFAULT.nudgeBlocks).toString().split(','))];
