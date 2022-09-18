@@ -19,10 +19,10 @@ function validateInputArgs(inputArgs){
     // if(webhooksValidationParam.error !== null){
     //     errors.push(webhooksValidationParam.error);
     // }
-    if(successColorValidationError !== null){
+    if(!successColorValidationError){
         errors.push(successColorValidationError);
     }
-    if(failureColorValidationParam.error !== null){
+    if(!failureColorValidationParam){
         errors.push(failureColorValidationParam.error);
     }
     // if(nudgeBlocksValidationParam.error !== null){
