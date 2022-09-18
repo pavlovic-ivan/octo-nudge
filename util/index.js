@@ -68,6 +68,10 @@ function validateSuccessColor(inputArgs){
     let rule = {
         successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
     };
+
+    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(rule));
+
     let validation = new Validator(data, rule);
     console.log(validation.fails());
     let error = (validation.fails() ? '[success-color] is invalid' : null);
