@@ -9088,10 +9088,10 @@ function validateInputArgs(inputArgs){
     // if(webhooksValidationParam.error !== null){
     //     errors.push(webhooksValidationParam.error);
     // }
-    if(!successColorValidationError){
+    if(successColorValidationError){
         errors.push(successColorValidationError);
     }
-    if(!failureColorValidationError){
+    if(failureColorValidationError){
         errors.push(failureColorValidationError);
     }
     // if(nudgeBlocksValidationParam.error !== null){
