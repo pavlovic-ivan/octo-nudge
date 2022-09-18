@@ -76,7 +76,7 @@ function validateNudgeBlocks(inputArgs){
         let errors = [];
         nudgeBlocks.forEach(nudgeBlock => {
             if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
-                errors.push(`${nudgeBlock} is invalid value`);
+                errors.push(`${nudgeBlock} is an invalid nudge block value`);
             }
         });
         if(errors.length > 0){
