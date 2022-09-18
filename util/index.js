@@ -5,15 +5,14 @@ const VALIDATION_RULE = {
 
 const DEFAULT = {
     successColor: '#228c22',
-    failureColor: '#990f02',
-    nudgeBlocks: [ 'commit', 'message' ]
+    failureColor: '#990f02'
 }
 
 function validateInputArgs(inputArgs){
     let webhooksValidationError = validateWebhooks(inputArgs);
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
-    // let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
+    let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
 
     let errors = [];
     if(webhooksValidationError !== null){
@@ -25,9 +24,9 @@ function validateInputArgs(inputArgs){
     if(failureColorValidationError){
         errors.push(failureColorValidationError);
     }
-    // if(nudgeBlocksValidationParam.error !== null){
-    //     errors.push(nudgeBlocksValidationParam.error);
-    // }
+    if(nudgeBlocksValidationError){
+        errors.push(nudgeBlocksValidationError);
+    }
 
     return errors;
 }
@@ -38,14 +37,18 @@ function validateWebhooks(inputArgs){
         error = '[webhooks] is invalid';
     } else {
         let webhooks = [... new Set(inputArgs.webhooks.toString().split(','))]
+        let errors = [];
         webhooks.forEach(webhook => {
                 try {
                     new URL(webhook);
                 } catch(e) {
-                    error = `${webhook} is an invalid URL`;
+                    errors.push(`${webhook} is an invalid URL`);
                 }
             }
         );
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
     }
     return error;
 }
@@ -64,10 +67,24 @@ function validateFailureColor(inputArgs){
     return error;
 }
 
-// function validateNudgeBlocks(inputArgs){
-//     let nudgeBlocks = [...new Set((inputArgs.nudgeBlocks || DEFAULT.nudgeBlocks).toString().split(','))];
-//     return new ValidatedConfigParam(nudgeBlocks, VALIDATION_RULE.nudgeBlocks, '[nudge-blocks] is invalid');
-// }
+function validateNudgeBlocks(inputArgs){
+    let error = null;
+    if(!inputArgs.nudgeBlocks){
+        error = '[nudge-blocks] is invalid';
+    } else {
+        let nudgeBlocks = [... new Set(inputArgs.nudgeBlocks.toString().split(','))]
+        let errors = [];
+        nudgeBlocks.forEach(nudgeBlock => {
+            if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
+                errors.push(`${nudgeBlock} is invalid value`);
+            }
+        });
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
+}
 
 // function createMessage(data){
 //     return {
