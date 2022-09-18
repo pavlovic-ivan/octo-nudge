@@ -73,6 +73,7 @@ function validateSuccessColor(inputArgs){
     console.log(JSON.stringify(rule));
 
     let validation = new Validator(data, rule);
+    
     console.log(validation.fails());
     let error = (validation.fails() ? '[success-color] is invalid' : null);
     console.log(error);

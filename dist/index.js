@@ -11362,6 +11362,7 @@ function validateSuccessColor(inputArgs){
     console.log(JSON.stringify(rule));
 
     let validation = new Validator(data, rule);
+    
     console.log(validation.fails());
     let error = (validation.fails() ? '[success-color] is invalid' : null);
     console.log(error);
@@ -11588,6 +11589,7 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const util = __nccwpck_require__(7018);
 const nudgeBuilder = __nccwpck_require__(5029);
+let Validator = __nccwpck_require__(5185);
 
 async function run() {
   try {
@@ -11603,6 +11605,25 @@ async function run() {
       commit: github.context.payload.workflow_run.head_commit,
       workflowUrl: github.context.payload.workflow_run.html_url
     };
+
+
+    let data = {
+      successColor: (inputArgs.successColor || '#228c22').toString()
+    };
+    let rule = {
+        successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
+    };
+
+    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(rule));
+
+    let validation = new Validator(data, rule);
+    
+    console.log(validation.fails());
+    let error = (validation.fails() ? '[success-color] is invalid' : null);
+    console.log(error);
+
+
     
     let errors = util.validateInputArgs(inputArgs);
     if(errors !== null && errors.length > 0){

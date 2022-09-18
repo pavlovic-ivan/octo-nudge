@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const util = require('./util');
 const nudgeBuilder = require('./nudge-builder');
+let Validator = require('validatorjs');
 
 async function run() {
   try {
@@ -17,6 +18,25 @@ async function run() {
       commit: github.context.payload.workflow_run.head_commit,
       workflowUrl: github.context.payload.workflow_run.html_url
     };
+
+
+    let data = {
+      successColor: (inputArgs.successColor || '#228c22').toString()
+    };
+    let rule = {
+        successColor: ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
+    };
+
+    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(rule));
+
+    let validation = new Validator(data, rule);
+    
+    console.log(validation.fails());
+    let error = (validation.fails() ? '[success-color] is invalid' : null);
+    console.log(error);
+
+
     
     let errors = util.validateInputArgs(inputArgs);
     if(errors !== null && errors.length > 0){
