@@ -14,7 +14,7 @@ async function run() {
 
     let context = {
       conclussion: github.context.payload.workflow_run.conclusion,
-      commit: github.context.payload.workflow_run.head_commit,
+      commit: github.context.payload.workflow_run.head_commit.id,
       workflowUrl: github.context.payload.workflow_run.html_url
     };
     
