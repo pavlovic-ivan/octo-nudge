@@ -9081,7 +9081,7 @@ const DEFAULT = {
 function validateInputArgs(inputArgs){
     // let webhooksValidationParam = validateWebhooks(inputArgs);
     let successColorValidationError = validateSuccessColor(inputArgs);
-    let failureColorValidationParam = validateFailureColor(inputArgs);
+    let failureColorValidationError = validateFailureColor(inputArgs);
     // let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
 
     let errors = [];
@@ -9091,8 +9091,8 @@ function validateInputArgs(inputArgs){
     if(!successColorValidationError){
         errors.push(successColorValidationError);
     }
-    if(!failureColorValidationParam){
-        errors.push(failureColorValidationParam.error);
+    if(!failureColorValidationError){
+        errors.push(failureColorValidationError);
     }
     // if(nudgeBlocksValidationParam.error !== null){
     //     errors.push(nudgeBlocksValidationParam.error);
