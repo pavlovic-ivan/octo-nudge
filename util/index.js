@@ -36,6 +36,18 @@ function validateWebhooks(inputArgs){
     let error = null;
     if(!inputArgs.webhooks){
         error = '[webhooks] is invalid';
+    } else {
+        inputArgs.webhooks
+            .toString()
+            .split(',')
+            .forEach(webhook => {
+                try {
+                    new URL(webhook);
+                } catch(e) {
+                    error = `${webhook} is an invalid URL`;
+                }
+            }
+        );
     }
     return error;
 }
