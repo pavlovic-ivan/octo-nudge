@@ -10,15 +10,15 @@ const DEFAULT = {
 }
 
 function validateInputArgs(inputArgs){
-    // let webhooksValidationParam = validateWebhooks(inputArgs);
+    let webhooksValidationError = validateWebhooks(inputArgs);
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
     // let nudgeBlocksValidationParam = validateNudgeBlocks(inputArgs);
 
     let errors = [];
-    // if(webhooksValidationParam.error !== null){
-    //     errors.push(webhooksValidationParam.error);
-    // }
+    if(webhooksValidationError !== null){
+        errors.push(webhooksValidationError);
+    }
     if(successColorValidationError){
         errors.push(successColorValidationError);
     }
@@ -32,23 +32,13 @@ function validateInputArgs(inputArgs){
     return errors;
 }
 
-// function validateWebhooks(inputArgs){
-//     console.log(JSON.stringify(inputArgs));
-//     let webhooks = [...new Set((inputArgs.webhooks || '').toString().split(','))]; 
-//     console.log(JSON.stringify(webhooks));
-//     let data = {
-//         webhooks: [...new Set((inputArgs.webhooks || '').toString().split(','))]
-//     };
-//     let rule = {
-//         webhooks: VALIDATION_RULE.webhooks
-//     };
-//     let validation = new Validator(data, rule);
-//     console.log(`Webhooks is invalid: ${validation.fails()}`);
-//     let result = {
-//         error: (validation.fails() ? '[webhooks] is invalid' : null)
-//     };
-//     return result;
-// }
+function validateWebhooks(inputArgs){
+    let error = null;
+    if(!inputArgs.webhooks){
+        error = '[webhooks] is invalid';
+    }
+    return error;
+}
 
 function validateSuccessColor(inputArgs){
     let successColor = (inputArgs.successColor || DEFAULT.successColor).toString();
