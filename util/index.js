@@ -60,7 +60,7 @@ function validateSuccessColor(inputArgs){
 function validateFailureColor(inputArgs){
     let failureColor = (inputArgs.failureColor || DEFAULT.failureColor).toString();
     let valid = VALIDATION_RULE.colorRegex.test(failureColor);
-    let error = (valid ? null : '[ailure-color] is invalid');
+    let error = (valid ? null : '[failure-color] is invalid');
     return error;
 }
 

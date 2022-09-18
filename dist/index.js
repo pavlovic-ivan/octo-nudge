@@ -9129,7 +9129,7 @@ function validateSuccessColor(inputArgs){
 function validateFailureColor(inputArgs){
     let failureColor = (inputArgs.failureColor || DEFAULT.failureColor).toString();
     let valid = VALIDATION_RULE.colorRegex.test(failureColor);
-    let error = (valid ? null : '[ailure-color] is invalid');
+    let error = (valid ? null : '[failure-color] is invalid');
     return error;
 }
 
@@ -9367,6 +9367,7 @@ async function run() {
     
     let errors = util.validateInputArgs(inputArgs);
     if(errors !== null && errors.length > 0){
+      console.log(`received errors: ${JSON.stringify(errors)}`);
       errors.forEach(error => core.error(error));
       core.error('Provided action configuration is invalid. Please check docs for configuring the action');
       process.exit(1);

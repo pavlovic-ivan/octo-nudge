@@ -20,6 +20,7 @@ async function run() {
     
     let errors = util.validateInputArgs(inputArgs);
     if(errors !== null && errors.length > 0){
+      console.log(`received errors: ${JSON.stringify(errors)}`);
       errors.forEach(error => core.error(error));
       core.error('Provided action configuration is invalid. Please check docs for configuring the action');
       process.exit(1);
