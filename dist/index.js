@@ -9069,13 +9069,13 @@ module.exports = {
 
 const VALIDATION_RULE = {
     colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
-    nudgeBlocks: ['required', 'array', {'in': ['commit', 'message']}]
+    nudgeBlocks: [ 'commit', 'message' ]
 }
 
 const DEFAULT = {
     successColor: '#228c22',
     failureColor: '#990f02',
-    nudgeBlocks: 'commit,message'
+    nudgeBlocks: [ 'commit', 'message' ]
 }
 
 function validateInputArgs(inputArgs){
@@ -9106,10 +9106,8 @@ function validateWebhooks(inputArgs){
     if(!inputArgs.webhooks){
         error = '[webhooks] is invalid';
     } else {
-        inputArgs.webhooks
-            .toString()
-            .split(',')
-            .forEach(webhook => {
+        let webhooks = [... new Set(inputArgs.webhooks.toString().split(','))]
+        webhooks.forEach(webhook => {
                 try {
                     new URL(webhook);
                 } catch(e) {
