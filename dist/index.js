@@ -15660,6 +15660,7 @@ async function run() {
       core.error('Provided action configuration is invalid. Please check docs for configuring the action');
       process.exit(1);
     } else {
+      core.info(`Debug: ${JSON.stringify(inputArgs)}, ${JSON.stringify(context)}`);
       let nudges = nudgeBuilder.buildMessages(inputArgs, context);
       
       core.info(`nudges: ${JSON.stringify(nudges)}`);
