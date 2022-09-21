@@ -28,12 +28,12 @@ function addAdditionalInfo(inputArgs, context, message){
       console.log(`att: ${JSON.stringify(message.attachments[0])}`);
       console.log(`fields: ${JSON.stringify(message.attachments[0].fields)}`);
 
-      if(nudgeBLocks.blocks[i] === 'commit'){
+      if(nudgeBLocks[i] === 'commit'){
         message.attachments[0].fields.push({
           title: 'Commit',
           value: `<${util.getCommitInfo(context)}|${getCommitSlug(context)}>`
         });
-      } else if(nudgeBLocks.blocks[i] === 'message'){
+      } else if(nudgeBLocks[i] === 'message'){
         message.attachments[0].fields.push({
           title: 'Message',
           value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
