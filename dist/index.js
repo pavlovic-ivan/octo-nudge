@@ -15227,6 +15227,9 @@ function buildMessages(inputArgs, context){
 }
 
 function buildMessage(webhook, inputArgs, context){
+    console.log(`Debug: ${JSON.stringify(webhook)}, ${JSON.stringify(inputArgs)}, ${JSON.stringify(context)}`);
+    console.log(`Debug slackMessageBuilder: ${JSON.stringify(slackMessageBuilder)}`);
+    console.log(`Debug discordMessageBuilder: ${JSON.stringify(discordMessageBuilder)}`);
     let payload = detectPlatform(webhook).create(inputArgs, context);
     return { webhook, payload };
 }
