@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const util = require('./util');
 const nudgeBuilder = require('./nudge-builder');
+const { default: axios } = require('axios');
 
 async function run() {
   try {
@@ -15,7 +16,9 @@ async function run() {
     let context = {
       conclussion: github.context.payload.workflow_run.conclusion,
       commit: github.context.payload.workflow_run.head_commit.id,
-      workflowUrl: github.context.payload.workflow_run.html_url
+      workflowUrl: github.context.payload.workflow_run.html_url,
+      workflowName: github.context.payload.workflow_run.name,
+      repoName: github.context.payload.repository.full_name
     };
     
     let errors = util.validateInputArgs(inputArgs);
@@ -25,11 +28,26 @@ async function run() {
       process.exit(1);
     } else {
       let nudges = nudgeBuilder.buildMessages(inputArgs, context);
-      nudges.forEach(message => message.send());
+
+      nudges.forEach(message => {
+        nudge(message)
+          .then(res => { 
+            core.info(`Message sent successfully. Http status: ${res.status}`); 
+          })
+          .catch(error => { 
+            core.error(error.message); 
+          })
+        }
+      );
     }
   } catch (error) {
     core.setFailed(error.message);
   }
+}
+
+function nudge(message){
+    let payload = JSON.stringify(message.payload);
+    return axios.post(message.webhook, JSON.parse(payload));
 }
 
 run();

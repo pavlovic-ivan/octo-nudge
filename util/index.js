@@ -72,7 +72,7 @@ function validateNudgeBlocks(inputArgs){
     if(!inputArgs.nudgeBlocks){
         error = '[nudge-blocks] is invalid';
     } else {
-        let nudgeBlocks = [... new Set(inputArgs.nudgeBlocks.toString().split(','))]
+        let nudgeBlocks = getNudgeBlocksArray(inputArgs);
         let errors = [];
         nudgeBlocks.forEach(nudgeBlock => {
             if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
@@ -84,6 +84,22 @@ function validateNudgeBlocks(inputArgs){
         }
     }
     return error;
+}
+
+function resolveColor(inputArgs, context){
+    if(context.conclussion === 'success'){
+        return inputArgs.successColor;
+    } else if (context.conclussion === 'failure'){
+        return inputArgs.failureColor;
+    }
+}
+
+function getNudgeBlocksArray(inputArgs){
+    return [... new Set(inputArgs.nudgeBlocks.toString().split(','))];
+}
+
+function getCommitInfo(context){
+    return `https://github.com/${context.repoName}/commit/${context.commit}`;
 }
 
 // function createMessage(data){
@@ -119,5 +135,8 @@ function validateNudgeBlocks(inputArgs){
 // }
 
 module.exports = {
-    validateInputArgs
+    validateInputArgs,
+    resolveColor,
+    getNudgeBlocksArray,
+    getCommitInfo
 }
