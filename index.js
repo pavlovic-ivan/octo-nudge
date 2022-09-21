@@ -27,11 +27,7 @@ async function run() {
       core.error('Provided action configuration is invalid. Please check docs for configuring the action');
       process.exit(1);
     } else {
-      core.info(`Debug: ${JSON.stringify(inputArgs)}, ${JSON.stringify(context)}`);
       let nudges = nudgeBuilder.buildMessages(inputArgs, context);
-      
-      core.info(`nudges: ${JSON.stringify(nudges)}`);
-      
       nudges.forEach(message => {
         nudge(message)
           .then(res => { 
@@ -49,8 +45,6 @@ async function run() {
 }
 
 function nudge(message){
-  core.info(`message: ${JSON.stringify(message)}`);
-  core.info(`axios: ${JSON.stringify(axios)}`);
   let payload = JSON.stringify(message.payload);
   return axios.post(message.webhook, JSON.parse(payload));
 }
