@@ -35,6 +35,7 @@ function addAdditionalInfo(inputArgs, context, message){
           value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
         });
       }
+      console.log(`message after iteration is: ${JSON.stringify(message)}`);
     }
     return message;
 }
