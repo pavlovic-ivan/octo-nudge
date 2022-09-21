@@ -1,15 +1,9 @@
 const util = require('../util');
 
-class DiscordMessageBuilder {
-  constructor(webhook){
-    this.webhook = webhook;
-  }
-
-    create(inputArgs, context){
-        let message = buildDefaultMessage(inputArgs, context);
-        message = addAdditionalInfo(inputArgs, context, message);
-        return message;
-    }
+function create(inputArgs, context){
+  let message = buildDefaultMessage(inputArgs, context);
+  message = addAdditionalInfo(inputArgs, context, message);
+  return message;
 }
 
 function buildDefaultMessage(inputArgs, context){
@@ -47,4 +41,6 @@ function addAdditionalInfo(inputArgs, context, message){
     return message;
 }
 
-module.exports.DiscordMessageBuilder = new DiscordMessageBuilder();
+module.exports = {
+  create
+}

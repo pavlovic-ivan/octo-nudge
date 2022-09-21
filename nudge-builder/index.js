@@ -1,9 +1,5 @@
-// webhooks: core.getInput('webhooks', { required: true }),
-// successColor: core.getInput('success-color'),
-// failureColor: core.getInput('failure-color'),
-// nudgeBlocks: core.getInput('nudge-blocks')
-const { SlackMessageBuilder } = require('../slack');
-const { DiscordMessageBuilder } = require('../discord');
+const slackMessageBuilder = require('../slack');
+const discordMessageBuilder = require('../discord');
 
 const DOMAIN = {
     slack: 'https://hooks.slack.com',
@@ -27,9 +23,9 @@ function buildMessage(webhook, inputArgs, context){
 function detectPlatform(webhook){
     if(webhook){
         if(webhook.startsWith(DOMAIN.slack)){
-            return new SlackMessageBuilder(webhook);
+            return slackMessageBuilder;
         } else if(webhook.startsWith(DOMAIN.discord)){
-          return new DiscordMessageBuilder(webhook);
+          return discordMessageBuilder;
         } else {
             //throw an error, shut down the app maybe? TODO
         }

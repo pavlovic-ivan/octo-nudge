@@ -1,15 +1,9 @@
 const util = require('../util');
 
-class SlackMessageBuilder {
-    constructor(webhook){
-      this.webhook = webhook;
-    }
-
-    create(inputArgs, context){
-        let message = buildDefaultMessage(inputArgs, context);
-        message = addAdditionalInfo(inputArgs, context, message);
-        return message;
-    }
+function create(inputArgs, context){
+  let message = buildDefaultMessage(inputArgs, context);
+  message = addAdditionalInfo(inputArgs, context, message);
+  return message;
 }
 
 function buildDefaultMessage(inputArgs, context){
@@ -44,4 +38,6 @@ function getCommitSlug(context){
     return context.commit.substring(0, 6);
 }
 
-module.exports.SlackMessageBuilder = new SlackMessageBuilder();
+module.exports = {
+  create
+}

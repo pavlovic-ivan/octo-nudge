@@ -6,16 +6,10 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 const util = __nccwpck_require__(7018);
 
-class DiscordMessageBuilder {
-  constructor(webhook){
-    this.webhook = webhook;
-  }
-
-    create(inputArgs, context){
-        let message = buildDefaultMessage(inputArgs, context);
-        message = addAdditionalInfo(inputArgs, context, message);
-        return message;
-    }
+function create(inputArgs, context){
+  let message = buildDefaultMessage(inputArgs, context);
+  message = addAdditionalInfo(inputArgs, context, message);
+  return message;
 }
 
 function buildDefaultMessage(inputArgs, context){
@@ -53,7 +47,9 @@ function addAdditionalInfo(inputArgs, context, message){
     return message;
 }
 
-module.exports.DiscordMessageBuilder = new DiscordMessageBuilder();
+module.exports = {
+  create
+}
 
 /***/ }),
 
@@ -15213,12 +15209,8 @@ function wrappy (fn, cb) {
 /***/ 5029:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-// webhooks: core.getInput('webhooks', { required: true }),
-// successColor: core.getInput('success-color'),
-// failureColor: core.getInput('failure-color'),
-// nudgeBlocks: core.getInput('nudge-blocks')
-const { SlackMessageBuilder } = __nccwpck_require__(7830);
-const { DiscordMessageBuilder } = __nccwpck_require__(383);
+const slackMessageBuilder = __nccwpck_require__(7830);
+const discordMessageBuilder = __nccwpck_require__(383);
 
 const DOMAIN = {
     slack: 'https://hooks.slack.com',
@@ -15242,9 +15234,9 @@ function buildMessage(webhook, inputArgs, context){
 function detectPlatform(webhook){
     if(webhook){
         if(webhook.startsWith(DOMAIN.slack)){
-            return new SlackMessageBuilder(webhook);
+            return slackMessageBuilder;
         } else if(webhook.startsWith(DOMAIN.discord)){
-          return new DiscordMessageBuilder(webhook);
+          return discordMessageBuilder;
         } else {
             //throw an error, shut down the app maybe? TODO
         }
@@ -15262,16 +15254,10 @@ module.exports = {
 
 const util = __nccwpck_require__(7018);
 
-class SlackMessageBuilder {
-    constructor(webhook){
-      this.webhook = webhook;
-    }
-
-    create(inputArgs, context){
-        let message = buildDefaultMessage(inputArgs, context);
-        message = addAdditionalInfo(inputArgs, context, message);
-        return message;
-    }
+function create(inputArgs, context){
+  let message = buildDefaultMessage(inputArgs, context);
+  message = addAdditionalInfo(inputArgs, context, message);
+  return message;
 }
 
 function buildDefaultMessage(inputArgs, context){
@@ -15306,7 +15292,9 @@ function getCommitSlug(context){
     return context.commit.substring(0, 6);
 }
 
-module.exports.SlackMessageBuilder = new SlackMessageBuilder();
+module.exports = {
+  create
+}
 
 /***/ }),
 
