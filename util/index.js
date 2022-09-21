@@ -99,6 +99,7 @@ function getNudgeBlocksArray(inputArgs){
 }
 
 function getCommitInfo(context){
+    console.log(`Commit info: https://github.com/${context.repoName}/commit/${context.commit}`);
     return `https://github.com/${context.repoName}/commit/${context.commit}`;
 }
 

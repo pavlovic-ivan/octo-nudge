@@ -15301,6 +15301,7 @@ function addAdditionalInfo(inputArgs, context, message){
 }
 
 function getCommitSlug(context){
+  console.log(`commit slug: ${context.commit.substring(0, 6)}`);
     return context.commit.substring(0, 6);
 }
 
@@ -15414,6 +15415,7 @@ function getNudgeBlocksArray(inputArgs){
 }
 
 function getCommitInfo(context){
+    console.log(`Commit info: https://github.com/${context.repoName}/commit/${context.commit}`);
     return `https://github.com/${context.repoName}/commit/${context.commit}`;
 }
 

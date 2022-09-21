@@ -41,6 +41,7 @@ function addAdditionalInfo(inputArgs, context, message){
 }
 
 function getCommitSlug(context){
+  console.log(`commit slug: ${context.commit.substring(0, 6)}`);
     return context.commit.substring(0, 6);
 }
 
