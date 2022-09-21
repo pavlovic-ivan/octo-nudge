@@ -28,7 +28,9 @@ async function run() {
       process.exit(1);
     } else {
       let nudges = nudgeBuilder.buildMessages(inputArgs, context);
-
+      
+      core.info(`nudges: ${JSON.stringify(nudges)}`);
+      
       nudges.forEach(message => {
         nudge(message)
           .then(res => { 
@@ -46,8 +48,10 @@ async function run() {
 }
 
 function nudge(message){
-    let payload = JSON.stringify(message.payload);
-    return axios.post(message.webhook, JSON.parse(payload));
+  core.info(`message: ${JSON.stringify(message)}`);
+  core.info(`axios: ${JSON.stringify(axios)}`);
+  let payload = JSON.stringify(message.payload);
+  return axios.post(message.webhook, JSON.parse(payload));
 }
 
 run();
