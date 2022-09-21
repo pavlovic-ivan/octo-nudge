@@ -24,9 +24,10 @@ function addAdditionalInfo(inputArgs, context, message){
     let nudgeBLocks = util.getNudgeBlocksArray(inputArgs);
     console.log(`message is: ${JSON.stringify(message)}`);
     for(var i = 0; i < nudgeBLocks.length; i++){
+      console.log(`att: ${message.attachments[0]}`);
+      console.log(`fields: ${message.attachments[0].fields}`);
+
       if(nudgeBLocks.blocks[i] === 'commit'){
-        console.log(`att: ${message.attachments[0]}`);
-        console.log(`fields: ${message.attachments[0].fields}`);
         message.attachments[0].fields.push({
           title: 'Commit',
           value: `<${util.getCommitInfo(context)}|${getCommitSlug(context)}>`
