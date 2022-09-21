@@ -6,6 +6,7 @@ function create(inputArgs, context){
   console.log('default message created');
   message = addAdditionalInfo(inputArgs, context, message);
   console.log('additional info added');
+  console.log(`entire message: ${JSON.stringify(message)}`);
   return message;
 }
 
