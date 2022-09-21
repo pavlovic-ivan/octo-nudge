@@ -15230,16 +15230,18 @@ function buildMessage(webhook, inputArgs, context){
     console.log(`Debug: ${JSON.stringify(webhook)}, ${JSON.stringify(inputArgs)}, ${JSON.stringify(context)}`);
     console.log(`Debug slackMessageBuilder: ${JSON.stringify(slackMessageBuilder)}`);
     console.log(`Debug discordMessageBuilder: ${JSON.stringify(discordMessageBuilder)}`);
-    let payload = detectPlatform(webhook, inputArgs, context);
+    let payload = createPlatformSpecificMessage(webhook, inputArgs, context);
     console.log(`Debug payload: ${JSON.stringify(payload)}`);
     return { webhook, payload };
 }
 
-function detectPlatform(webhook, inputArgs, context){
+function createPlatformSpecificMessage(webhook, inputArgs, context){
     if(webhook){
         if(webhook.startsWith(DOMAIN.slack)){
+            console.log('detected Slack');
             return slackMessageBuilder.create(inputArgs, context);
         } else if(webhook.startsWith(DOMAIN.discord)){
+            console.log('detected Discord');
           return discordMessageBuilder.create(inputArgs, context);
         } else {
             //throw an error, shut down the app maybe? TODO
