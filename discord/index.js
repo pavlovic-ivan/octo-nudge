@@ -26,12 +26,12 @@ function convertHexToInt(hex){
 function addAdditionalInfo(inputArgs, context, message){
   let nudgeBlocks = util.getNudgeBlocksArray(inputArgs);
     for(var i = 0; i < nudgeBlocks.length; i++){
-      if(nudgeBlocks.blocks[i] === 'commit'){
+      if(nudgeBlocks[i] === 'commit'){
         message.embeds[0].fields.push({
           name: 'Commit',
           value: `${util.getCommitInfo(context)}`
         });
-      } else if(nudgeBlocks.blocks[i] === 'message'){
+      } else if(nudgeBlocks[i] === 'message'){
         message.embeds[0].fields.push({
           name: 'Message',
           value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
