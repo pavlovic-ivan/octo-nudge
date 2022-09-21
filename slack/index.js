@@ -1,6 +1,7 @@
 const util = require('../util');
 
 function create(inputArgs, context){
+  console.log('creating Slack message');
   let message = buildDefaultMessage(inputArgs, context);
   message = addAdditionalInfo(inputArgs, context, message);
   return message;
