@@ -15318,6 +15318,7 @@ function validateInputArgs(inputArgs){
     let failureColorValidationError = validateFailureColor(inputArgs);
     let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
     let conclusionsValidationError = validateConclusions(inputArgs);
+    let eventsValidationError = validateEvents(inputArgs);
 
     let errors = [];
     if(webhooksValidationError !== null){
@@ -15335,8 +15336,30 @@ function validateInputArgs(inputArgs){
     if(conclusionsValidationError){
         errors.push(conclusionsValidationError);
     }
+    if(eventsValidationError){
+        errors.push(eventsValidationError);
+    }
 
     return errors;
+}
+
+function validateEvents(inputArgs){
+    let error = null;
+    if(!inputArgs.events){
+        error = '[events] is invalid';
+    } else {
+        let events = getArrayFromString(inputArgs.events);
+        let errors = [];
+        events.forEach(event => {
+            if(!VALIDATION_RULE.events.includes(event)){
+                errors.push(`${event} is an invalid event value`);
+            }
+        });
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
 }
 
 function validateConclusions(inputArgs){
@@ -15346,9 +15369,9 @@ function validateConclusions(inputArgs){
     } else {
         let conclusions = getArrayFromString(inputArgs.conclusions);
         let errors = [];
-        conclusions.forEach(conclusions => {
-            if(!VALIDATION_RULE.conclusions.includes(conclusions)){
-                errors.push(`${conclusions} is an invalid conclusion value`);
+        conclusions.forEach(conclusion => {
+            if(!VALIDATION_RULE.conclusions.includes(conclusion)){
+                errors.push(`${conclusion} is an invalid conclusion value`);
             }
         });
         if(errors.length > 0){
@@ -15636,17 +15659,17 @@ async function run() {
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks'),
-      conclusions: core.getInput('conclusions')
+      conclusions: core.getInput('conclusions'),
+      events: core.getInput('events')
     };
-
-    console.log(`Events: ${JSON.stringify(github.context.payload.workflow_run)}`);
 
     let context = {
       conclusion: github.context.payload.workflow_run.conclusion,
       commit: github.context.payload.workflow_run.head_commit.id,
       workflowUrl: github.context.payload.workflow_run.html_url,
       workflowName: github.context.payload.workflow_run.name,
-      repoName: github.context.payload.repository.full_name
+      repoName: github.context.payload.repository.full_name,
+      event: github.context.payload.workflow_run.event
     };
     
     let errors = util.validateInputArgs(inputArgs);
@@ -15676,7 +15699,8 @@ async function run() {
 
 function toNudge(inputArgs, context){
   let conclusions = util.getArrayFromString(inputArgs.conclusions);
-  return conclusions.includes(context.conclusion);
+  let events = util.getArrayFromString(inputArgs.events);
+  return conclusions.includes(context.conclusion) && events.includes(context.event);
 }
 
 function nudge(message){

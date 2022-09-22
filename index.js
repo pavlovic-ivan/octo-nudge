@@ -11,17 +11,17 @@ async function run() {
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks'),
-      conclusions: core.getInput('conclusions')
+      conclusions: core.getInput('conclusions'),
+      events: core.getInput('events')
     };
-
-    console.log(`Events: ${JSON.stringify(github.context.payload.workflow_run)}`);
 
     let context = {
       conclusion: github.context.payload.workflow_run.conclusion,
       commit: github.context.payload.workflow_run.head_commit.id,
       workflowUrl: github.context.payload.workflow_run.html_url,
       workflowName: github.context.payload.workflow_run.name,
-      repoName: github.context.payload.repository.full_name
+      repoName: github.context.payload.repository.full_name,
+      event: github.context.payload.workflow_run.event
     };
     
     let errors = util.validateInputArgs(inputArgs);
@@ -51,7 +51,8 @@ async function run() {
 
 function toNudge(inputArgs, context){
   let conclusions = util.getArrayFromString(inputArgs.conclusions);
-  return conclusions.includes(context.conclusion);
+  let events = util.getArrayFromString(inputArgs.events);
+  return conclusions.includes(context.conclusion) && events.includes(context.event);
 }
 
 function nudge(message){

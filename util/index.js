@@ -15,6 +15,7 @@ function validateInputArgs(inputArgs){
     let failureColorValidationError = validateFailureColor(inputArgs);
     let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
     let conclusionsValidationError = validateConclusions(inputArgs);
+    let eventsValidationError = validateEvents(inputArgs);
 
     let errors = [];
     if(webhooksValidationError !== null){
@@ -32,8 +33,30 @@ function validateInputArgs(inputArgs){
     if(conclusionsValidationError){
         errors.push(conclusionsValidationError);
     }
+    if(eventsValidationError){
+        errors.push(eventsValidationError);
+    }
 
     return errors;
+}
+
+function validateEvents(inputArgs){
+    let error = null;
+    if(!inputArgs.events){
+        error = '[events] is invalid';
+    } else {
+        let events = getArrayFromString(inputArgs.events);
+        let errors = [];
+        events.forEach(event => {
+            if(!VALIDATION_RULE.events.includes(event)){
+                errors.push(`${event} is an invalid event value`);
+            }
+        });
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
 }
 
 function validateConclusions(inputArgs){
@@ -43,9 +66,9 @@ function validateConclusions(inputArgs){
     } else {
         let conclusions = getArrayFromString(inputArgs.conclusions);
         let errors = [];
-        conclusions.forEach(conclusions => {
-            if(!VALIDATION_RULE.conclusions.includes(conclusions)){
-                errors.push(`${conclusions} is an invalid conclusion value`);
+        conclusions.forEach(conclusion => {
+            if(!VALIDATION_RULE.conclusions.includes(conclusion)){
+                errors.push(`${conclusion} is an invalid conclusion value`);
             }
         });
         if(errors.length > 0){
