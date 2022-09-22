@@ -16,6 +16,10 @@ inputs:
     description: 'A comma separated list of blocks you want to see in the nudge message. Default: [commit,message]. Blocks will appear in provided order'
     required: false
     default: 'commit,message'
+  conclussions:
+    description: 'A comma separated list of workflow run conclussions you want to listen to and react to. Default: [failure]'
+    required: false
+    default: 'failure'
 runs:
   using: 'node16'
   main: 'dist/index.js'
