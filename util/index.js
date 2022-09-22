@@ -1,6 +1,7 @@
 const VALIDATION_RULE = {
     colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
-    nudgeBlocks: [ 'commit', 'message' ]
+    nudgeBlocks: [ 'commit', 'message' ],
+    conclussions: [ 'failure', 'success' ]
 }
 
 const DEFAULT = {
@@ -13,6 +14,7 @@ function validateInputArgs(inputArgs){
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
     let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
+    let conclussionsValidationError = validateConclussions(inputArgs);
 
     let errors = [];
     if(webhooksValidationError !== null){
@@ -27,8 +29,30 @@ function validateInputArgs(inputArgs){
     if(nudgeBlocksValidationError){
         errors.push(nudgeBlocksValidationError);
     }
+    if(conclussionsValidationError){
+        errors.push(conclussionsValidationError);
+    }
 
     return errors;
+}
+
+function validateConclussions(inputArgs){
+    let error = null;
+    if(!inputArgs.conclussions){
+        error = '[conclussions] is invalid';
+    } else {
+        let conclussions = getArrayFromString(inputArgs.conclussions);
+        let errors = [];
+        conclussions.forEach(conclussions => {
+            if(!VALIDATION_RULE.conclussions.includes(conclussions)){
+                errors.push(`${conclussions} is an invalid conclussion value`);
+            }
+        });
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
 }
 
 function validateWebhooks(inputArgs){
@@ -72,7 +96,7 @@ function validateNudgeBlocks(inputArgs){
     if(!inputArgs.nudgeBlocks){
         error = '[nudge-blocks] is invalid';
     } else {
-        let nudgeBlocks = getNudgeBlocksArray(inputArgs);
+        let nudgeBlocks = getArrayFromString(inputArgs.nudgeBlocks);
         let errors = [];
         nudgeBlocks.forEach(nudgeBlock => {
             if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
@@ -94,8 +118,8 @@ function resolveColor(inputArgs, context){
     }
 }
 
-function getNudgeBlocksArray(inputArgs){
-    return [... new Set(inputArgs.nudgeBlocks.toString().split(','))];
+function getArrayFromString(stringArray){
+    return [... new Set(stringArray.toString().split(','))];
 }
 
 function getCommitInfo(context){
@@ -105,6 +129,6 @@ function getCommitInfo(context){
 module.exports = {
     validateInputArgs,
     resolveColor,
-    getNudgeBlocksArray,
-    getCommitInfo
+    getCommitInfo,
+    getArrayFromString
 }

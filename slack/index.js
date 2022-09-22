@@ -17,7 +17,7 @@ function buildDefaultMessage(inputArgs, context){
 }
 
 function addAdditionalInfo(inputArgs, context, message){
-    let nudgeBLocks = util.getNudgeBlocksArray(inputArgs);
+    let nudgeBLocks = util.getArrayFromString(inputArgs.nudgeBLocks);
     for(var i = 0; i < nudgeBLocks.length; i++){
       if(nudgeBLocks[i] === 'commit'){
         message.attachments[0].fields.push({
