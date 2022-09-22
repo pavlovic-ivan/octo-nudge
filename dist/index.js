@@ -15653,21 +15653,28 @@ async function run() {
       core.error('Provided action configuration is invalid. Please check docs for configuring the action');
       process.exit(1);
     } else {
-      let nudges = nudgeBuilder.buildMessages(inputArgs, context);
-      nudges.forEach(message => {
-        nudge(message)
-          .then(res => { 
-            core.info(`Message sent successfully. Http status: ${res.status}`); 
-          })
-          .catch(error => { 
-            core.error(error.message); 
-          })
-        }
-      );
+      if(toNudge(inputArgs, context)){
+        let nudges = nudgeBuilder.buildMessages(inputArgs, context);
+        nudges.forEach(message => {
+          nudge(message)
+            .then(res => { 
+              core.info(`Message sent successfully. Http status: ${res.status}`); 
+            })
+            .catch(error => { 
+              core.error(error.message); 
+            })
+          }
+        );
+      }
     }
   } catch (error) {
     core.setFailed(error.message);
   }
+}
+
+function toNudge(inputArgs, context){
+  let conclussions = util.getArrayFromString(inputArgs.conclussions);
+  return conclussions.includes(context.conclusion);
 }
 
 function nudge(message){
