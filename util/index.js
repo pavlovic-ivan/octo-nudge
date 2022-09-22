@@ -72,7 +72,7 @@ function validateNudgeBlocks(inputArgs){
     if(!inputArgs.nudgeBlocks){
         error = '[nudge-blocks] is invalid';
     } else {
-        let nudgeBlocks = [... new Set(inputArgs.nudgeBlocks.toString().split(','))]
+        let nudgeBlocks = getNudgeBlocksArray(inputArgs);
         let errors = [];
         nudgeBlocks.forEach(nudgeBlock => {
             if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
@@ -86,38 +86,25 @@ function validateNudgeBlocks(inputArgs){
     return error;
 }
 
-// function createMessage(data){
-//     return {
-//         attachments: [{
-//           author_name: 'Octo Nudge',
-//           color: data.successColor,
-//           fields: []
-//         }]
-//     };
-// }
+function resolveColor(inputArgs, context){
+    if(context.conclussion === 'success'){
+        return inputArgs.successColor;
+    } else if (context.conclussion === 'failure'){
+        return inputArgs.failureColor;
+    }
+}
 
-// function convertHexToInt(hex){
-//     hex = hex.replace('#', '');
-//     return parseInt(hex, 16);
-// }
+function getNudgeBlocksArray(inputArgs){
+    return [... new Set(inputArgs.nudgeBlocks.toString().split(','))];
+}
 
-// function addAdditionalInfo(repoConfig, message, workflow_run, repository){
-//     for(var i = 0; i < repoConfig.blocks.length; i++){
-//       if(repoConfig.blocks[i] === 'commit'){
-//         message.embeds[0].fields.push({
-//           name: 'Commit',
-//           value: `${util.getCommitInfo(workflow_run, repository)}`
-//         });
-//       } else if(repoConfig.blocks[i] === 'message'){
-//         message.embeds[0].fields.push({
-//           name: 'Message',
-//           value: `Workflow ${workflow_run.name} conclussion: ${workflow_run.conclusion}. Workflow URL: ${workflow_run.html_url}`
-//         });
-//       }
-//     }
-//     return message;
-// }
+function getCommitInfo(context){
+    return `https://github.com/${context.repoName}/commit/${context.commit}`;
+}
 
 module.exports = {
-    validateInputArgs
+    validateInputArgs,
+    resolveColor,
+    getNudgeBlocksArray,
+    getCommitInfo
 }
