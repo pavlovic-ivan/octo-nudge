@@ -15639,7 +15639,7 @@ async function run() {
       conclusions: core.getInput('conclusions')
     };
 
-    console.log(`Events: ${github.context.payload.workflow_run.event}`);
+    console.log(`Events: ${JSON.stringify(github.context.payload.workflow_run.event)}`);
 
     let context = {
       conclusion: github.context.payload.workflow_run.conclusion,
