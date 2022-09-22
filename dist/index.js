@@ -15684,7 +15684,7 @@ async function run() {
         nudges.forEach(message => {
           nudge(message)
             .then(res => { 
-              core.info(`Message sent successfully. Http status: ${res.status}`); 
+              core.debug(`Message sent successfully. Http status: ${res.status}`); 
             })
             .catch(error => { 
               core.error(error.message); 
