@@ -17,17 +17,17 @@ function buildDefaultMessage(inputArgs, context){
 }
 
 function addAdditionalInfo(inputArgs, context, message){
-    let nudgeBLocks = util.getNudgeBlocksArray(inputArgs);
-    for(var i = 0; i < nudgeBLocks.length; i++){
-      if(nudgeBLocks[i] === 'commit'){
+    let nudgeBlocks = util.getArrayFromString(inputArgs.nudgeBlocks);
+    for(var i = 0; i < nudgeBlocks.length; i++){
+      if(nudgeBlocks[i] === 'commit'){
         message.attachments[0].fields.push({
           title: 'Commit',
           value: `<${util.getCommitInfo(context)}|${getCommitSlug(context)}>`
         });
-      } else if(nudgeBLocks[i] === 'message'){
+      } else if(nudgeBlocks[i] === 'message'){
         message.attachments[0].fields.push({
           title: 'Message',
-          value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
+          value: `Workflow ${context.workflowName} conclusion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
         });
       }
     }

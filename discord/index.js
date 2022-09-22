@@ -24,7 +24,7 @@ function convertHexToInt(hex){
 }
 
 function addAdditionalInfo(inputArgs, context, message){
-  let nudgeBlocks = util.getNudgeBlocksArray(inputArgs);
+  let nudgeBlocks = util.getArrayFromString(inputArgs.nudgeBlocks);
     for(var i = 0; i < nudgeBlocks.length; i++){
       if(nudgeBlocks[i] === 'commit'){
         message.embeds[0].fields.push({
@@ -34,7 +34,7 @@ function addAdditionalInfo(inputArgs, context, message){
       } else if(nudgeBlocks[i] === 'message'){
         message.embeds[0].fields.push({
           name: 'Message',
-          value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
+          value: `Workflow ${context.workflowName} conclusion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
         });
       }
     }

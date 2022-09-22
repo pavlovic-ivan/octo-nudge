@@ -30,7 +30,7 @@ function convertHexToInt(hex){
 }
 
 function addAdditionalInfo(inputArgs, context, message){
-  let nudgeBlocks = util.getNudgeBlocksArray(inputArgs);
+  let nudgeBlocks = util.getArrayFromString(inputArgs.nudgeBlocks);
     for(var i = 0; i < nudgeBlocks.length; i++){
       if(nudgeBlocks[i] === 'commit'){
         message.embeds[0].fields.push({
@@ -40,7 +40,7 @@ function addAdditionalInfo(inputArgs, context, message){
       } else if(nudgeBlocks[i] === 'message'){
         message.embeds[0].fields.push({
           name: 'Message',
-          value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
+          value: `Workflow ${context.workflowName} conclusion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
         });
       }
     }
@@ -15271,17 +15271,17 @@ function buildDefaultMessage(inputArgs, context){
 }
 
 function addAdditionalInfo(inputArgs, context, message){
-    let nudgeBLocks = util.getNudgeBlocksArray(inputArgs);
-    for(var i = 0; i < nudgeBLocks.length; i++){
-      if(nudgeBLocks[i] === 'commit'){
+    let nudgeBlocks = util.getArrayFromString(inputArgs.nudgeBlocks);
+    for(var i = 0; i < nudgeBlocks.length; i++){
+      if(nudgeBlocks[i] === 'commit'){
         message.attachments[0].fields.push({
           title: 'Commit',
           value: `<${util.getCommitInfo(context)}|${getCommitSlug(context)}>`
         });
-      } else if(nudgeBLocks[i] === 'message'){
+      } else if(nudgeBlocks[i] === 'message'){
         message.attachments[0].fields.push({
           title: 'Message',
-          value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
+          value: `Workflow ${context.workflowName} conclusion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
         });
       }
     }
@@ -15303,7 +15303,8 @@ module.exports = {
 
 const VALIDATION_RULE = {
     colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
-    nudgeBlocks: [ 'commit', 'message' ]
+    nudgeBlocks: [ 'commit', 'message' ],
+    conclusions: [ 'failure', 'success' ]
 }
 
 const DEFAULT = {
@@ -15316,6 +15317,7 @@ function validateInputArgs(inputArgs){
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
     let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
+    let conclusionsValidationError = validateConclusions(inputArgs);
 
     let errors = [];
     if(webhooksValidationError !== null){
@@ -15330,8 +15332,30 @@ function validateInputArgs(inputArgs){
     if(nudgeBlocksValidationError){
         errors.push(nudgeBlocksValidationError);
     }
+    if(conclusionsValidationError){
+        errors.push(conclusionsValidationError);
+    }
 
     return errors;
+}
+
+function validateConclusions(inputArgs){
+    let error = null;
+    if(!inputArgs.conclusions){
+        error = '[conclusions] is invalid';
+    } else {
+        let conclusions = getArrayFromString(inputArgs.conclusions);
+        let errors = [];
+        conclusions.forEach(conclusions => {
+            if(!VALIDATION_RULE.conclusions.includes(conclusions)){
+                errors.push(`${conclusions} is an invalid conclusion value`);
+            }
+        });
+        if(errors.length > 0){
+            error = errors.join(',');
+        }
+    }
+    return error;
 }
 
 function validateWebhooks(inputArgs){
@@ -15375,7 +15399,7 @@ function validateNudgeBlocks(inputArgs){
     if(!inputArgs.nudgeBlocks){
         error = '[nudge-blocks] is invalid';
     } else {
-        let nudgeBlocks = getNudgeBlocksArray(inputArgs);
+        let nudgeBlocks = getArrayFromString(inputArgs.nudgeBlocks);
         let errors = [];
         nudgeBlocks.forEach(nudgeBlock => {
             if(!VALIDATION_RULE.nudgeBlocks.includes(nudgeBlock)){
@@ -15390,15 +15414,15 @@ function validateNudgeBlocks(inputArgs){
 }
 
 function resolveColor(inputArgs, context){
-    if(context.conclussion === 'success'){
+    if(context.conclusion === 'success'){
         return inputArgs.successColor;
-    } else if (context.conclussion === 'failure'){
+    } else if (context.conclusion === 'failure'){
         return inputArgs.failureColor;
     }
 }
 
-function getNudgeBlocksArray(inputArgs){
-    return [... new Set(inputArgs.nudgeBlocks.toString().split(','))];
+function getArrayFromString(stringArray){
+    return [... new Set(stringArray.toString().split(','))];
 }
 
 function getCommitInfo(context){
@@ -15408,8 +15432,8 @@ function getCommitInfo(context){
 module.exports = {
     validateInputArgs,
     resolveColor,
-    getNudgeBlocksArray,
-    getCommitInfo
+    getCommitInfo,
+    getArrayFromString
 }
 
 /***/ }),
@@ -15611,11 +15635,12 @@ async function run() {
       webhooks: core.getInput('webhooks', { required: true }),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
-      nudgeBlocks: core.getInput('nudge-blocks')
+      nudgeBlocks: core.getInput('nudge-blocks'),
+      conclusions: core.getInput('conclusions')
     };
 
     let context = {
-      conclussion: github.context.payload.workflow_run.conclusion,
+      conclusion: github.context.payload.workflow_run.conclusion,
       commit: github.context.payload.workflow_run.head_commit.id,
       workflowUrl: github.context.payload.workflow_run.html_url,
       workflowName: github.context.payload.workflow_run.name,
@@ -15628,21 +15653,28 @@ async function run() {
       core.error('Provided action configuration is invalid. Please check docs for configuring the action');
       process.exit(1);
     } else {
-      let nudges = nudgeBuilder.buildMessages(inputArgs, context);
-      nudges.forEach(message => {
-        nudge(message)
-          .then(res => { 
-            core.info(`Message sent successfully. Http status: ${res.status}`); 
-          })
-          .catch(error => { 
-            core.error(error.message); 
-          })
-        }
-      );
+      if(toNudge(inputArgs, context)){
+        let nudges = nudgeBuilder.buildMessages(inputArgs, context);
+        nudges.forEach(message => {
+          nudge(message)
+            .then(res => { 
+              core.info(`Message sent successfully. Http status: ${res.status}`); 
+            })
+            .catch(error => { 
+              core.error(error.message); 
+            })
+          }
+        );
+      }
     }
   } catch (error) {
     core.setFailed(error.message);
   }
+}
+
+function toNudge(inputArgs, context){
+  let conclusions = util.getArrayFromString(inputArgs.conclusions);
+  return conclusions.includes(context.conclusion);
 }
 
 function nudge(message){
