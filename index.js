@@ -49,7 +49,7 @@ async function run() {
 
 function toNudge(inputArgs, context){
   let conclussions = util.getArrayFromString(inputArgs.conclussions);
-  return conclussions.includes(context.conclusion);
+  return conclussions.includes(context.conclussion);
 }
 
 function nudge(message){
