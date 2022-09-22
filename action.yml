@@ -5,19 +5,19 @@ inputs:
     description: 'A comma separated list of Slack/Discord webhooks to which to send the nudge'
     required: true
   success-color:
-    description: 'Hex value of the color for successfull workflow run conclussions'
+    description: 'Hex value of the color for successfull workflow run conclusions'
     required: false
     default: '#228c22'
   failure-color:
-    description: 'Hex value of the color for failed workflow run conclussions'
+    description: 'Hex value of the color for failed workflow run conclusions'
     required: false
     default: '#990f02'
   nudge-blocks:
     description: 'A comma separated list of blocks you want to see in the nudge message. Default: [commit,message]. Blocks will appear in provided order'
     required: false
     default: 'commit,message'
-  conclussions:
-    description: 'A comma separated list of workflow run conclussions you want to listen to and react to. Default: [failure]'
+  conclusions:
+    description: 'A comma separated list of workflow run conclusions you want to listen to and react to. Default: [failure]'
     required: false
     default: 'failure'
 runs:

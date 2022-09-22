@@ -34,7 +34,7 @@ function addAdditionalInfo(inputArgs, context, message){
       } else if(nudgeBlocks[i] === 'message'){
         message.embeds[0].fields.push({
           name: 'Message',
-          value: `Workflow ${context.workflowName} conclussion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
+          value: `Workflow ${context.workflowName} conclusion: ${context.conclusion}. Workflow URL: ${context.workflowUrl}`
         });
       }
     }

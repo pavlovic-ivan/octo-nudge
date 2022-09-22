@@ -1,7 +1,7 @@
 const VALIDATION_RULE = {
     colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
     nudgeBlocks: [ 'commit', 'message' ],
-    conclussions: [ 'failure', 'success' ]
+    conclusions: [ 'failure', 'success' ]
 }
 
 const DEFAULT = {
@@ -14,7 +14,7 @@ function validateInputArgs(inputArgs){
     let successColorValidationError = validateSuccessColor(inputArgs);
     let failureColorValidationError = validateFailureColor(inputArgs);
     let nudgeBlocksValidationError = validateNudgeBlocks(inputArgs);
-    let conclussionsValidationError = validateConclussions(inputArgs);
+    let conclusionsValidationError = validateConclusions(inputArgs);
 
     let errors = [];
     if(webhooksValidationError !== null){
@@ -29,23 +29,23 @@ function validateInputArgs(inputArgs){
     if(nudgeBlocksValidationError){
         errors.push(nudgeBlocksValidationError);
     }
-    if(conclussionsValidationError){
-        errors.push(conclussionsValidationError);
+    if(conclusionsValidationError){
+        errors.push(conclusionsValidationError);
     }
 
     return errors;
 }
 
-function validateConclussions(inputArgs){
+function validateConclusions(inputArgs){
     let error = null;
-    if(!inputArgs.conclussions){
-        error = '[conclussions] is invalid';
+    if(!inputArgs.conclusions){
+        error = '[conclusions] is invalid';
     } else {
-        let conclussions = getArrayFromString(inputArgs.conclussions);
+        let conclusions = getArrayFromString(inputArgs.conclusions);
         let errors = [];
-        conclussions.forEach(conclussions => {
-            if(!VALIDATION_RULE.conclussions.includes(conclussions)){
-                errors.push(`${conclussions} is an invalid conclussion value`);
+        conclusions.forEach(conclusions => {
+            if(!VALIDATION_RULE.conclusions.includes(conclusions)){
+                errors.push(`${conclusions} is an invalid conclusion value`);
             }
         });
         if(errors.length > 0){
@@ -111,9 +111,9 @@ function validateNudgeBlocks(inputArgs){
 }
 
 function resolveColor(inputArgs, context){
-    if(context.conclussion === 'success'){
+    if(context.conclusion === 'success'){
         return inputArgs.successColor;
-    } else if (context.conclussion === 'failure'){
+    } else if (context.conclusion === 'failure'){
         return inputArgs.failureColor;
     }
 }

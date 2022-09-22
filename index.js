@@ -11,11 +11,11 @@ async function run() {
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
       nudgeBlocks: core.getInput('nudge-blocks'),
-      conclussions: core.getInput('conclussions')
+      conclusions: core.getInput('conclusions')
     };
 
     let context = {
-      conclussion: github.context.payload.workflow_run.conclusion,
+      conclusion: github.context.payload.workflow_run.conclusion,
       commit: github.context.payload.workflow_run.head_commit.id,
       workflowUrl: github.context.payload.workflow_run.html_url,
       workflowName: github.context.payload.workflow_run.name,
@@ -48,8 +48,8 @@ async function run() {
 }
 
 function toNudge(inputArgs, context){
-  let conclussions = util.getArrayFromString(inputArgs.conclussions);
-  return conclussions.includes(context.conclussion);
+  let conclusions = util.getArrayFromString(inputArgs.conclusions);
+  return conclusions.includes(context.conclusion);
 }
 
 function nudge(message){
