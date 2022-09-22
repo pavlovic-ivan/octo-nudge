@@ -10,7 +10,8 @@ async function run() {
       webhooks: core.getInput('webhooks', { required: true }),
       successColor: core.getInput('success-color'),
       failureColor: core.getInput('failure-color'),
-      nudgeBlocks: core.getInput('nudge-blocks')
+      nudgeBlocks: core.getInput('nudge-blocks'),
+      conclussions: core.getInput('conclussions')
     };
 
     let context = {
