@@ -15692,7 +15692,7 @@ async function run() {
           }
         );
       } else {
-        core.info('No messages will be sent. Workflw run does not apply to the config given');
+        core.info('No messages will be sent. Workflow run does not apply to the config given');
       }
     }
   } catch (error) {
