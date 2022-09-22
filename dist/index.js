@@ -15304,7 +15304,8 @@ module.exports = {
 const VALIDATION_RULE = {
     colorRegex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
     nudgeBlocks: [ 'commit', 'message' ],
-    conclusions: [ 'failure', 'success' ]
+    conclusions: [ 'failure', 'success' ],
+    events: [ 'push' , 'schedule' ]
 }
 
 const DEFAULT = {
