@@ -119,7 +119,6 @@ function resolveColor(inputArgs, context){
 }
 
 function getArrayFromString(stringArray){
-    console.log(`String array: ${JSON.stringify(stringArray)}`);
     return [... new Set(stringArray.toString().split(','))];
 }
 

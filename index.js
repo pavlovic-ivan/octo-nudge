@@ -48,7 +48,6 @@ async function run() {
 }
 
 function toNudge(inputArgs, context){
-  console.log(`Input args: ${JSON.stringify(inputArgs)}`);
   let conclussions = util.getArrayFromString(inputArgs.conclussions);
   return conclussions.includes(context.conclussion);
 }
