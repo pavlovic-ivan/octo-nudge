@@ -14,6 +14,8 @@ async function run() {
       conclusions: core.getInput('conclusions')
     };
 
+    console.log(`Events: ${github.context.payload.workflow_run.event}`);
+
     let context = {
       conclusion: github.context.payload.workflow_run.conclusion,
       commit: github.context.payload.workflow_run.head_commit.id,
