@@ -20,6 +20,10 @@ inputs:
     description: 'A comma separated list of workflow run conclusions you want to listen to and react to. Default: [failure]'
     required: false
     default: 'failure'
+  events:
+    description: 'A comma separated list of workflow run events you want to listen to and react to. Default: [push,schedule]'
+    required: false
+    default: 'push,schedule'
 runs:
   using: 'node16'
   main: 'dist/index.js'
