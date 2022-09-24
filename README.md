@@ -41,3 +41,9 @@ jobs:
 
 > **:information_source: NOTE:**
 > Create a protected environment with webhooks as secrets. It is not suggested to commit webhooks in freetext to the repository
+
+With the Octo Nudge configured as above (using defaults), Octo Nudge will listen to completed workflows runs by the name "CI", that got triggered by the main branch, either via push or by a scheduled run. Furthermore, Octo Nudge will check only if the workflow "CI" failed, and it will send a notification that contains two blocks: a commit, and a message with workflow info.
+
+# Configuring Octo Nudge
+
+To configure the Octo Nudge to behave you want it to behave, make sure you've read the (input arguments table)[#action-input-arguments].
