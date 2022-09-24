@@ -83,3 +83,34 @@ Here is the success nudge:
 ![Success nudge, commit only](images/success-nudge-commit.png "Success Nudge commit only")
 Here is the failure nudge:
 ![Failure nudge, commit only](images/failure-nudge-commit.png "Failure Nudge commit only")
+
+To see the message in the notification just add it to the `nudge-blocks`:
+```
+name: Nudge
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: protected
+    steps:
+      - name: Send message
+        uses: pavlovic-ivan/octo-nudge@main
+        with:
+          webhooks: ${{ secrets.WEBHOOKS }}
+          events: 'push'
+          conclusions: 'failure,success'
+          nudge-blocks: 'commit,message'
+          success-color: '#e6cc00'
+          failure-color: '#0066ff'
+```
+
+Here is the success nudge:
+![Full success nudge](images/success-nudge-full.png "Full success nudge")
+Here is the failure nudge:
+![Full failure nudge](images/failure-nudge-full.png "Full failure nudge")
