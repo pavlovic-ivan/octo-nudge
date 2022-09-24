@@ -80,6 +80,6 @@ jobs:
 ```
 
 Here is the success nudge:
-![Success nudge, commit only](images/success-nudge-commit.jpg "Success Nudge commit only")
+![Success nudge, commit only](images/success-nudge-commit.png "Success Nudge commit only")
 Here is the failure nudge:
-![Failure nudge, commit only](images/failure-nudge-commit.jpg "Failure Nudge commit only")
+![Failure nudge, commit only](images/failure-nudge-commit.png "Failure Nudge commit only")
