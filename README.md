@@ -114,3 +114,6 @@ Here is the success nudge:
 ![Full success nudge](images/success-nudge-full.png "Full success nudge")
 Here is the failure nudge:
 ![Full failure nudge](images/failure-nudge-full.png "Full failure nudge")
+
+> **:information_source: PRO TIP:**
+> Order of the `nudge-blocks` values matters. Blocks in the notification will appear in the listed order. Setting `nudge-blocks` to `'message,commit'` will first display the message details and then the commit info.
