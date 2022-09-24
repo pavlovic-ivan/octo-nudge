@@ -1,4 +1,8 @@
-tos
+Table of contents:
+1. [About](#about)
+2. [Action input arguments](#action-input-arguments)
+3. [Quick usage](#quick-usage)
+4. [Configuring Octo Nudge](#configuring-octo-nudge)
 # About
 
 Octo Nudge is a Github Action that integrates with Slack and Discord and sends notifications to selected channels about you workflow. If your workflofw fails, or succeeds and you want to know about it, Octo Nudge will send a notificatio. Also, you can choose which events to listen to, and those are `push` and `schedule`.
