@@ -39,3 +39,5 @@ jobs:
           webhooks: ${{ secrets.WEBHOOKS }}
 ```
 
+> **TIP**
+> Create a protected environment with webhooks as secrets. It is not suggested to commit webhooks in freetext to the repository.
