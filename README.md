@@ -46,4 +46,35 @@ With the Octo Nudge configured as above (using defaults), Octo Nudge will listen
 
 # Configuring Octo Nudge
 
-To configure the Octo Nudge to behave you want it to behave, make sure you've read the [input arguments table](#action-input-arguments).
+To configure the Octo Nudge to behave you want it to behave, make sure you've read the [input arguments table](#action-input-arguments). Let's say you want the Octo Nudge to send notifications only when:
+
+- a push triggers the "CI" workflow
+- "CI" workflow fails or succeeds
+- you want to see only the commit that triggered the "CI" workflow
+- if the "CI" workflow fails you want to color the notification in yellow (#e6cc00)
+- if the "CI" workflow succeeds you want to color the notification in blue (#0066ff)
+
+```
+name: Nudge
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: protected
+    steps:
+      - name: Send message
+        uses: pavlovic-ivan/octo-nudge@main
+        with:
+          webhooks: ${{ secrets.WEBHOOKS }}
+          events: 'push'
+          conclussions: 'failure,success'
+          nudge-blocks: 'commit'
+          success-color: '#e6cc00'
+          failure-color: '#0066ff'
+```
