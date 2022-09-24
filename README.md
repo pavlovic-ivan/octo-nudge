@@ -11,7 +11,7 @@ The following table documents action input arguments:
 | ------------- | -------- | -------------------- | ---------------- | ------------------------------------------------------------------------------------- |
 | webhooks      | yes      |                      |                  | A comma separated list of Slack/Discord webhooks to which to send the nudge           |
 | events        | no       | 'push,schedule'      | 'push,schedule'  | A comma separated list of workflow run events you want to listen to and react to      |
-| conclussions  | no       | 'failure,success'    | 'failure'        | A comma separated list of workflow run conclusions you want to listen to and react to |
+| conclusions   | no       | 'failure,success'    | 'failure'        | A comma separated list of workflow run conclusions you want to listen to and react to |
 | nudge-blocks  | no       | 'commit,message'     | 'commit,message' | A comma separated list of blocks you want to see in the nudge message                 |
 | success-color | no       | any valid hex code   | '#228c22'        | Hex value of the color for successfull workflow run conclusions                       |
 | failure-color | no       | any valid hex code   | '#990f02'        | Hex value of the color for failed workflow run conclusions                            |
@@ -73,8 +73,13 @@ jobs:
         with:
           webhooks: ${{ secrets.WEBHOOKS }}
           events: 'push'
-          conclussions: 'failure,success'
+          conclusions: 'failure,success'
           nudge-blocks: 'commit'
           success-color: '#e6cc00'
           failure-color: '#0066ff'
 ```
+
+Here is the success nudge:
+![Success nudge, commit only](/images/success-nudge-commit.jpg "Success Nudge commit only")
+Here is the failure nudge:
+![Failure nudge, commit only](/images/failure-nudge-commit.jpg "Failure Nudge commit only")
