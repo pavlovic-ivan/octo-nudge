@@ -46,4 +46,4 @@ With the Octo Nudge configured as above (using defaults), Octo Nudge will listen
 
 # Configuring Octo Nudge
 
-To configure the Octo Nudge to behave you want it to behave, make sure you've read the (input arguments table)[#action-input-arguments].
+To configure the Octo Nudge to behave you want it to behave, make sure you've read the [input arguments table](#action-input-arguments).
