@@ -38,5 +38,6 @@ jobs:
         with:
           webhooks: ${{ secrets.WEBHOOKS }}
 ```
-| :exclamation:  Create a protected environment with webhooks as secrets. It is not suggested to commit webhooks in freetext to the repository.   |
-|-------------------------------------------------------------------------------------------------------------------------------------------------|
+
+> **NOTE**
+> Create a protected environment with webhooks as secrets. It is not suggested to commit webhooks in freetext to the repository
