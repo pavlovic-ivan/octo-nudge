@@ -39,5 +39,12 @@ jobs:
           webhooks: ${{ secrets.WEBHOOKS }}
 ```
 
-> **NOTE**
+> **NOTE:**
 > Create a protected environment with webhooks as secrets. It is not suggested to commit webhooks in freetext to the repository
+
+<div class="warning">
+
+**NOTE:**
+Find the docs [here](http://example.com/).
+
+</div>
