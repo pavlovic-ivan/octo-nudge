@@ -19,5 +19,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build the dist/ directory
+      - name: Build dist/ directory
         run: npm run prepare
+
+      - name: Push dist/ directory
+        run: git status
+        
