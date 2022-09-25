@@ -23,5 +23,8 @@ jobs:
         run: npm run prepare
 
       - name: Push dist/ directory
-        run: git status
+        run: |
+          git add dist/
+          git commit -m "[ci] Build the action"
+          git status
         
