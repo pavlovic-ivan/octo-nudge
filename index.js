@@ -31,8 +31,6 @@ async function run() {
       process.exit(1);
     } else {
       if(toNudge(inputArgs, context)){
-        core.info("Creating notifications...");
-        
         let nudges = nudgeBuilder.buildMessages(inputArgs, context);
         nudges.forEach(message => {
           nudge(message)
