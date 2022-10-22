@@ -16145,6 +16145,7 @@ const { default: axios } = __nccwpck_require__(6545);
 
 async function run() {
   try {
+    core.info('Gathering input');
     let inputArgs = {
       webhooks: core.getInput('webhooks', { required: true }),
       successColor: core.getInput('success-color'),
@@ -16162,6 +16163,9 @@ async function run() {
       repoName: github.context.payload.repository.full_name,
       event: github.context.payload.workflow_run.event
     };
+
+    core.info('Gathering input done');
+    core.info(`Input context: ${JSON.stringify(context)}`);
     
     let errors = util.validateInputArgs(inputArgs);
     if(errors !== null && errors.length > 0){
@@ -16198,6 +16202,7 @@ function toNudge(inputArgs, context){
 
 function nudge(message){
   let payload = JSON.stringify(message.payload);
+  core.info(`Sending payload: ${JSON.stringify(JSON.parse(payload))}`);
   return axios.post(message.webhook, JSON.parse(payload));
 }
 
