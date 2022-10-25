@@ -15696,7 +15696,7 @@ const discordMessageBuilder = __nccwpck_require__(383);
 
 const DOMAIN = {
     slack: 'https://hooks.slack.com',
-    discord: 'https://discordapp.com'
+    discord: 'https://discord.com'
 }
 
 function buildMessages(inputArgs, context){

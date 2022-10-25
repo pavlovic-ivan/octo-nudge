@@ -3,7 +3,7 @@ const discordMessageBuilder = require('../discord');
 
 const DOMAIN = {
     slack: 'https://hooks.slack.com',
-    discord: 'https://discordapp.com'
+    discord: 'https://discord.com'
 }
 
 function buildMessages(inputArgs, context){
