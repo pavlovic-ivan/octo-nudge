@@ -90,7 +90,7 @@ function validateWebhooks(inputArgs){
                 try {
                     new URL(webhook);
                 } catch(e) {
-                    errors.push(`${webhook} is an invalid URL`);
+                    errors.push(`Your webhook URL is invalid`);
                 }
             }
         );

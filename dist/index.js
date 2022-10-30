@@ -15696,7 +15696,7 @@ const discordMessageBuilder = __nccwpck_require__(383);
 
 const DOMAIN = {
     slack: 'https://hooks.slack.com',
-    discord: 'https://discord.com'
+    discord: ['https://discord.com', 'https://discord.com']
 }
 
 function buildMessages(inputArgs, context){
@@ -15717,10 +15717,10 @@ function createPlatformSpecificMessage(webhook, inputArgs, context){
     if(webhook){
         if(webhook.startsWith(DOMAIN.slack)){
             return slackMessageBuilder.create(inputArgs, context);
-        } else if(webhook.startsWith(DOMAIN.discord)){
+        } else if(webhook.startsWith(DOMAIN.discord[0]) || webhook.startsWith(DOMAIN.discord[1])){
           return discordMessageBuilder.create(inputArgs, context);
         } else {
-            //throw an error, shut down the app maybe? TODO
+            throw new Error(`Domain of your webhook is not supported`);
         }
     }
 }
@@ -15875,7 +15875,7 @@ function validateWebhooks(inputArgs){
                 try {
                     new URL(webhook);
                 } catch(e) {
-                    errors.push(`${webhook} is an invalid URL`);
+                    errors.push(`Your webhook URL is invalid`);
                 }
             }
         );
