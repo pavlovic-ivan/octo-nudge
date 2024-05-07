@@ -12,9 +12,6 @@
 name: "javascript-action CodeQL config"
 
 on:
-  paths-ignore: 
-    - node_modules
-    - dist
   push:
     branches: [ main ]
   pull_request:
